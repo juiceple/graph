@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from fpdf import FPDF
+# from fpdf import FPDF
 import io
 
 # --------------------------
@@ -208,81 +208,81 @@ st.write(reason_text)
 
 # --------------------------
 # 5) PDF 생성
-# --------------------------
-FONT_PATH = "C:/Windows/Fonts/malgun.ttf"  # Windows 예시
+# # --------------------------
+# FONT_PATH = "C:/Windows/Fonts/malgun.ttf"  # Windows 예시
 
-class PDFReport(FPDF):
-    def header(self):
-        self.set_font('malgun', '', 16)
-        self.cell(0, 10, "종합 학습 진단 보고서", align='C', ln=True)
-        self.ln(5)
+# class PDFReport(FPDF):
+#     def header(self):
+#         self.set_font('malgun', '', 16)
+#         self.cell(0, 10, "종합 학습 진단 보고서", align='C', ln=True)
+#         self.ln(5)
 
-    def chapter_title(self, title):
-        self.set_font('malgun', '', 14)
-        self.cell(0, 10, title, ln=True)
-        self.ln(2)
+#     def chapter_title(self, title):
+#         self.set_font('malgun', '', 14)
+#         self.cell(0, 10, title, ln=True)
+#         self.ln(2)
 
-    def add_text(self, text):
-        self.set_font('malgun', '', 12)
-        self.multi_cell(0, 7, text)
-        self.ln(2)
+#     def add_text(self, text):
+#         self.set_font('malgun', '', 12)
+#         self.multi_cell(0, 7, text)
+#         self.ln(2)
 
-def create_pdf(all_subject_data, invest_df, overall_score, score_sum):
-    pdf = PDFReport()
-    pdf.add_font('malgun', '', FONT_PATH, uni=True)
-    pdf.add_page()
+# def create_pdf(all_subject_data, invest_df, overall_score, score_sum):
+#     pdf = PDFReport()
+#     pdf.add_font('Arial', '', '', uni=True)
+#     pdf.add_page()
 
-    # 1) 종합 평가
-    pdf.chapter_title("1. 종합 평가")
-    pdf.add_text(f"• 종합 학습 점수: {overall_score}등급")
-    pdf.add_text(f"• 투자 점수 합계: {score_sum:.2f}")
-    explain = (
-        f"'등급이 낮을수록(>5) 더 많이 공부했는지'를 정량화한 결과, "
-        f"점수 합계가 {score_sum:.2f}이므로 {overall_score}등급으로 평가되었습니다."
-    )
-    pdf.add_text(explain)
+#     # 1) 종합 평가
+#     pdf.chapter_title("1. 종합 평가")
+#     pdf.add_text(f"• 종합 학습 점수: {overall_score}등급")
+#     pdf.add_text(f"• 투자 점수 합계: {score_sum:.2f}")
+#     explain = (
+#         f"'등급이 낮을수록(>5) 더 많이 공부했는지'를 정량화한 결과, "
+#         f"점수 합계가 {score_sum:.2f}이므로 {overall_score}등급으로 평가되었습니다."
+#     )
+#     pdf.add_text(explain)
 
-    # 2) 과목별 '등급 대비 공부 시간 투자 점수'
-    pdf.chapter_title("2. (새) 등급 대비 공부 시간 투자 점수")
-    for idx, row in invest_df.iterrows():
-        subj = row["과목"]
-        sc = row["투자점수"]
-        pdf.add_text(f"- {subj}: {sc:.2f}")
+#     # 2) 과목별 '등급 대비 공부 시간 투자 점수'
+#     pdf.chapter_title("2. (새) 등급 대비 공부 시간 투자 점수")
+#     for idx, row in invest_df.iterrows():
+#         subj = row["과목"]
+#         sc = row["투자점수"]
+#         pdf.add_text(f"- {subj}: {sc:.2f}")
 
-    pdf.add_text("(점수가 높을수록 낮은 등급 과목에 공부 시간을 많이 투자했다는 의미)")
+#     pdf.add_text("(점수가 높을수록 낮은 등급 과목에 공부 시간을 많이 투자했다는 의미)")
 
-    # 3) 과목별 상세 피드백
-    pdf.chapter_title("3. 과목별 상세 피드백")
+#     # 3) 과목별 상세 피드백
+#     pdf.chapter_title("3. 과목별 상세 피드백")
 
-    for subject, info in all_subject_data.items():
-        pdf.add_text(f"▶ {subject}")
-        pdf.add_text(f"- 등급: {info['grade']}, 공부 시간: {info['study_time']}시간")
+#     for subject, info in all_subject_data.items():
+#         pdf.add_text(f"▶ {subject}")
+#         pdf.add_text(f"- 등급: {info['grade']}, 공부 시간: {info['study_time']}시간")
 
-        # 등급 간단 피드백
-        if info["grade"] <= 3:
-            pdf.add_text("  우수한 편입니다. 다른 과목과 균형 있게 유지하세요.")
-        elif info["grade"] <= 6:
-            pdf.add_text("  중간 정도이므로 취약 대단원 보충을 권장합니다.")
-        else:
-            pdf.add_text("  등급이 낮습니다. 추가 시간 투자와 기초 개념 정리가 필요합니다.")
+#         # 등급 간단 피드백
+#         if info["grade"] <= 3:
+#             pdf.add_text("  우수한 편입니다. 다른 과목과 균형 있게 유지하세요.")
+#         elif info["grade"] <= 6:
+#             pdf.add_text("  중간 정도이므로 취약 대단원 보충을 권장합니다.")
+#         else:
+#             pdf.add_text("  등급이 낮습니다. 추가 시간 투자와 기초 개념 정리가 필요합니다.")
 
-        # 대단원별 점수 피드백
-        for unit, score in info["unit_scores"].items():
-            if score < 50:
-                feed = f"❗ {unit}({score}점): 매우 낮음, 기초 개념 보충 필요!"
-            elif score < 70:
-                feed = f"⚠️ {unit}({score}점): 중간 이하, 복습 권장."
-            elif score < 85:
-                feed = f"✅ {unit}({score}점): 중간 이상, 조금 더 보완하세요."
-            elif score < 95:
-                feed = f"✨ {unit}({score}점): 우수, 실력 유지."
-            else:
-                feed = f"⭐ {unit}({score}점): 거의 만점, 훌륭합니다!"
-            pdf.add_text(feed)
+#         # 대단원별 점수 피드백
+#         for unit, score in info["unit_scores"].items():
+#             if score < 50:
+#                 feed = f"❗ {unit}({score}점): 매우 낮음, 기초 개념 보충 필요!"
+#             elif score < 70:
+#                 feed = f"⚠️ {unit}({score}점): 중간 이하, 복습 권장."
+#             elif score < 85:
+#                 feed = f"✅ {unit}({score}점): 중간 이상, 조금 더 보완하세요."
+#             elif score < 95:
+#                 feed = f"✨ {unit}({score}점): 우수, 실력 유지."
+#             else:
+#                 feed = f"⭐ {unit}({score}점): 거의 만점, 훌륭합니다!"
+#             pdf.add_text(feed)
 
-        pdf.ln(3)
+#         pdf.ln(3)
 
-    return pdf
+#     return pdf
 
 # --------------------------
 # 6) PDF 다운로드 버튼
