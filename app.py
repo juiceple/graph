@@ -287,18 +287,18 @@ def create_pdf(all_subject_data, invest_df, overall_score, score_sum):
 # --------------------------
 # 6) PDF 다운로드 버튼
 # --------------------------
-if st.button("PDF 다운로드"):
-    if len(all_subject_data) == 0:
-        st.error("과목 정보가 없습니다. 사이드바에서 과목을 입력해 주세요.")
-    else:
-        pdf = create_pdf(all_subject_data, invest_df, overall_score, score_sum)
-        pdf_buffer = io.BytesIO()
-        pdf.output(pdf_buffer, dest='S')
-        pdf_buffer.seek(0)
+# if st.button("PDF 다운로드"):
+#     if len(all_subject_data) == 0:
+#         st.error("과목 정보가 없습니다. 사이드바에서 과목을 입력해 주세요.")
+#     else:
+#         pdf = create_pdf(all_subject_data, invest_df, overall_score, score_sum)
+#         pdf_buffer = io.BytesIO()
+#         pdf.output(pdf_buffer, dest='S')
+#         pdf_buffer.seek(0)
         
-        st.download_button(
-            label="📄 종합 보고서 다운로드",
-            data=pdf_buffer,
-            file_name="종합_학습진단보고서.pdf",
-            mime="application/pdf"
-        )
+#         st.download_button(
+#             label="📄 종합 보고서 다운로드",
+#             data=pdf_buffer,
+#             file_name="종합_학습진단보고서.pdf",
+#             mime="application/pdf"
+#         )
