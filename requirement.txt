@@ -1,0 +1,4 @@
+streamlit==1.27.2  # 최신 버전으로 변경 가능
+pandas==1.5.3
+plotly==5.16.1
+fpdf==1.7.2
